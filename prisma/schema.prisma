@@ -1,0 +1,237 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model customer {
+  idCustomer      Int           @id @default(autoincrement())
+  customerName    String        @db.VarChar(222)
+  storeName       String        @db.VarChar(222)
+  createdAt       DateTime      @default(now()) @db.Timestamp(0)
+  user            user          @relation(fields: [createdBy], references: [idUser])
+  createdBy       Int
+  phone           String        @db.VarChar(222)
+  secondPhone     String        @db.VarChar(222)
+  email           String        @db.VarChar(222)
+  sellPrice       sellPrice     @relation(fields: [sellPriceId], references: [idSellPrice])
+  sellPriceId     Int
+  location        String        @db.VarChar(222)
+  nearby          String        @db.VarChar(1000)
+  province        province      @relation(fields: [provinceId], references: [idProvince])
+  provinceId      Int
+  visitDay        String        @db.VarChar(222)
+  secondVisitDay  String        @db.VarChar(222)
+  visitTimeFrom   String        @db.VarChar(222)
+  visitTimeTo     String        @db.VarChar(222)
+  customerClass   customerClass @relation(fields: [customerClassId], references: [idCustomerClass])
+  customerClassId Int
+  invoice         invoice[]
+  visit           visit[]
+}
+
+model customerClass {
+  idCustomerClass   Int        @id @default(autoincrement())
+  customerClassName String     @db.VarChar(222)
+  customer          customer[]
+}
+
+model deliveryStatus {
+  idDeliveryStatus Int       @id @default(autoincrement())
+  delivery         user      @relation(fields: [deliveryId], references: [idUser])
+  deliveryId       Int
+  invoice          invoice   @relation(fields: [invoiceId], references: [idInvoice])
+  invoiceId        Int
+  pickedAt         DateTime  @default(now()) @db.Timestamp(0)
+  startedAt        DateTime? @db.Timestamp(0)
+  deliveredAt      DateTime? @db.Timestamp(0)
+  notice           String    @db.LongText
+}
+
+model discount {
+  idDiscount     Int              @id @default(autoincrement())
+  discountName   String           @db.VarChar(222)
+  invoiceContent invoiceContent[]
+}
+
+model invoice {
+  idInvoice      Int              @id @default(autoincrement())
+  invoiceType    invoiceType      @relation(fields: [invoiceTypeId], references: [idInvoiceType])
+  invoiceTypeId  Int
+  customer       customer         @relation(fields: [customerId], references: [idCustomer])
+  customerId     Int
+  createdAt      DateTime         @default(now()) @db.Timestamp(0)
+  user           user             @relation("created", fields: [createdBy], references: [idUser])
+  createdBy      Int
+  notice         String?          @db.LongText
+  sellPrice      sellPrice        @relation(fields: [sellPriceId], references: [idSellPrice])
+  sellPriceId    Int
+  sellType       sellType         @relation(fields: [sellTypeId], references: [idSellType])
+  sellTypeId     Int
+  delivery       user?            @relation("delivery", fields: [deliveryId], references: [idUser])
+  deliveryId     Int?
+  deliveryStatus deliveryStatus[]
+  invoiceContent invoiceContent[]
+}
+
+model invoiceContent {
+  idInvoiceContent Int      @id @default(autoincrement())
+  invoice          invoice  @relation(fields: [invoiceId], references: [idInvoice])
+  invoiceId        Int
+  item             item     @relation(fields: [itemId], references: [idItem])
+  itemId           Int
+  count            Float    @db.Float
+  createdAt        DateTime @default(now()) @db.Timestamp(0)
+  discount         Float    @default(0) @db.Float
+  discountType     discount @relation(fields: [discountTypeId], references: [idDiscount])
+  discountTypeId   Int
+  price            Float    @db.Float
+  total            Float    @db.Float
+}
+
+model invoiceType {
+  idInvoiceType   Int                         @id @default(autoincrement())
+  invoiceTypeName String                      @db.VarChar(222)
+  invoiceFunction invoiceType_invoiceFunction
+  invoice         invoice[]
+}
+
+model item {
+  idItem          Int              @id @default(autoincrement())
+  itemName        String           @db.VarChar(222)
+  itemGroup       itemGroup        @relation(fields: [itemGroupId], references: [idItemGroup])
+  itemGroupId     Int
+  itemCode        String?          @db.VarChar(222)
+  itemBarcode     String?          @db.VarChar(222)
+  imagePath       String?          @db.VarChar(500)
+  itemDescription String?          @db.LongText
+  isAvailable     Int              @default(1)
+  invoiceContent  invoiceContent[]
+  prices          itemPrice[]
+}
+
+model itemGroup {
+  idItemGroup   Int    @id @default(autoincrement())
+  itemGroupName String @db.VarChar(222)
+  item          item[]
+}
+
+model itemPrice {
+  idItemPrice Int       @id @default(autoincrement())
+  item        item      @relation(fields: [itemId], references: [idItem])
+  itemId      Int
+  sellPrice   sellPrice @relation(fields: [sellPriceId], references: [idSellPrice])
+  sellPriceId Int
+  price       Float     @db.Float
+}
+
+model permission {
+  idPermission    Int               @id @default(autoincrement())
+  permissionName  String            @db.VarChar(222)
+  permissionKey   String            @db.VarChar(222)
+  rolePermissions rolePermissions[]
+}
+
+model role {
+  idRole          Int               @id @default(autoincrement())
+  roleName        String            @db.VarChar(222)
+  rolePermissions rolePermissions[]
+  user            user[]
+}
+
+model rolePermissions {
+  idRolePermissions Int        @id @default(autoincrement())
+  role              role       @relation(fields: [roleId], references: [idRole])
+  roleId            Int
+  permission        permission @relation(fields: [permissionId], references: [idPermission])
+  permissionId      Int
+
+  @@unique([roleId, permissionId])
+}
+
+model sellPrice {
+  idSellPrice   Int         @id @default(autoincrement())
+  sellPriceName String      @db.VarChar(222)
+  customer      customer[]
+  invoice       invoice[]
+  itemPrice     itemPrice[]
+}
+
+model province {
+  idProvince   Int        @id @default(autoincrement())
+  provinceName String     @db.VarChar(222)
+  customer     customer[]
+}
+
+model sellType {
+  idSellType   Int       @id @default(autoincrement())
+  sellTypeName String    @db.VarChar(222)
+  invoice      invoice[]
+}
+
+model settings {
+  idSetting Int    @id @default(autoincrement())
+  variable  String @unique @db.VarChar(222)
+  value     String @db.LongText
+}
+
+model user {
+  idUser          Int                  @id @default(autoincrement())
+  username        String               @db.VarChar(222)
+  password        String               @db.VarChar(222)
+  createdAt       DateTime             @default(now()) @db.Timestamp(0)
+  role            role                 @relation(fields: [roleId], references: [idRole])
+  roleId          Int
+  phone           String?              @db.VarChar(222)
+  email           String?              @db.VarChar(222)
+  customer        customer[]
+  deliveryStatus  deliveryStatus[]
+  invoice         invoice[]            @relation("created")
+  invoiceDelivery invoice[]            @relation("delivery")
+  userPermissions userPermissions[]
+  visit           visit[]
+  supervisors     supervisorDelegate[] @relation("supervisor")
+  delegates       supervisorDelegate[] @relation("delegate")
+}
+
+model userPermissions {
+  idUserPermissions Int  @id @default(autoincrement())
+  user              user @relation(fields: [userId], references: [idUser])
+  userId            Int
+  permissionId      Int
+}
+
+model visit {
+  idVisit      Int        @id @default(autoincrement())
+  user         user       @relation(fields: [createdBy], references: [idUser])
+  createdBy    Int
+  createdAt    DateTime   @default(now()) @db.Timestamp(0)
+  customer     customer   @relation(fields: [customerId], references: [idCustomer])
+  customerId   Int
+  visitCause   visitCause @relation(fields: [visitCauseId], references: [idVisitCause])
+  visitCauseId Int
+  longitude    String     @db.VarChar(222)
+  latitude     String     @db.VarChar(222)
+}
+
+model visitCause {
+  idVisitCause   Int     @id @default(autoincrement())
+  visitCauseName String  @db.VarChar(222)
+  visit          visit[]
+}
+
+enum invoiceType_invoiceFunction {
+  plus
+  minus
+}
+
+model supervisorDelegate {
+  idSupervisorDelegate Int  @id @default(autoincrement())
+  supervisor           user @relation("supervisor", fields: [supervisorId], references: [idUser])
+  supervisorId         Int
+  delegate             user @relation("delegate", fields: [delegateId], references: [idUser])
+  delegateId           Int
+}
