@@ -11,8 +11,8 @@ exports.create = (req, res) => {
       createdBy: req.body.createdBy,
       customerId: req.body.customerId,
       visitCauseId: req.body.visitCauseId,
-      longitude: req.body.longitude,
-      latitude: req.body.latitude,
+      longitude: `${req.body.longitude}`,
+      latitude: `${req.body.latitude}`,
    });
    Visit.create(visit, (err, data) => {
       if (err) res.status(err.code).send(err);
