@@ -92,9 +92,8 @@ Item.getAllWithQuery = async (result) => {
             prices: JSON.parse(`[${item.prices}]`),
          };
       });
-      items.prices = JSON.stringify(formattedItems);
-      console.log(items);
-      result(null, items);
+      console.log(formattedItems);
+      result(null, formattedItems);
    } catch (err) {
       console.log(prismaErrorHandling(err));
       result(prismaErrorHandling(err), null);
