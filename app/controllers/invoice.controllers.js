@@ -61,54 +61,99 @@ exports.findAll = (req, res) => {
 };
 
 exports.findByFilter = (req, res) => {
-   let filtered = {};
-   let conditions = {};
+   // let filtered = {};
+   // let conditions = {};
 
-   if (req.query.id) {
-      conditions.idInvoice = ParseInt(req.query.id);
+   // if (req.query.id) {
+   //    conditions.idInvoice = ParseInt(req.query.id);
+   // }
+
+   // if (req.query.date) {
+   //    conditions.createdAt = req.query.date;
+   // }
+
+   // if (req.query.type) {
+   //    conditions.invoiceTypeId = { in: req.query.type };
+   // }
+
+   // if (req.query.delivery) {
+   //    conditions.deliveryId = { in: req.query.delivery };
+   // }
+
+   // if (req.query.customer) {
+   //    conditions.customerId = { in: req.query.customer };
+   // }
+
+   // if (req.query.user) {
+   //    conditions.createdBy = { in: req.query.user };
+   // }
+
+   // if (req.query.limit) {
+   //    filtered.take = req.query.limit;
+   // }
+
+   // if (req.query.order) {
+   //    let orderInvoice = req.query.order;
+   //    filtered.orderBy = {};
+   //    filtered.orderBy[orderInvoice] = req.query.order;
+   // }
+
+   // if (req.query.dateRangeFrom && req.query.dateRangeTo) {
+   //    var startDate = new Date(req.query.dateRangeFrom);
+   //    var endDate = new Date(req.query.dateRangeTo);
+
+   //    conditions.orderDate = {
+   //       lte: endDate.toISOString(),
+   //       gte: startDate.toISOString(),
+   //    };
+   // }
+
+   let query = "";
+   let order = "";
+   let limit = "";
+
+   if (req.query.id != undefined) {
+      query = query + ` AND idInvoice = ${req.query.id}`;
    }
 
-   if (req.query.date) {
-      conditions.createdAt = req.query.date;
+   if (req.query.date != undefined) {
+      query = query + ` AND DATE(createdAt) = '${req.query.date}'`;
    }
 
-   if (req.query.type) {
-      conditions.invoiceTypeId = { in: req.query.type };
+   if (
+      req.query.dateRangeFrom != undefined &&
+      req.query.dateRangeTo != undefined
+   ) {
+      query =
+         query +
+         ` AND DATE(createdAt) BETWEEN '${req.query.dateRangeFrom}' AND '${req.query.dateRangeTo}'`;
    }
 
-   if (req.query.delivery) {
-      conditions.deliveryId = { in: req.query.delivery };
+   if (req.query.user != undefined) {
+      query = query + ` AND createdBy IN (${req.query.user})`;
    }
 
-   if (req.query.customer) {
-      conditions.customerId = { in: req.query.customer };
+   if (req.query.type != undefined) {
+      query = query + ` AND invoiceTypeId IN (${req.query.type})`;
    }
 
-   if (req.query.user) {
-      conditions.createdBy = { in: req.query.user };
+   if (req.query.delivery != undefined) {
+      query = query + ` AND deliveryId IN (${req.query.delivery})`;
    }
 
-   if (req.query.limit) {
-      filtered.take = req.query.limit;
+   if (req.query.customer != undefined) {
+      query = query + ` AND customerId IN (${req.query.customer})`;
    }
 
-   if (req.query.order) {
-      let orderInvoice = req.query.order;
-      filtered.orderBy = {};
-      filtered.orderBy[orderInvoice] = req.query.order;
+   if (req.query.order != undefined) {
+      order = "ORDER BY " + req.query.order + " " + req.query.sort;
    }
 
-   if (req.query.dateRangeFrom && req.query.dateRangeTo) {
-      var startDate = new Date(req.query.dateRangeFrom);
-      var endDate = new Date(req.query.dateRangeTo);
-
-      conditions.orderDate = {
-         lte: endDate.toISOString(),
-         gte: startDate.toISOString(),
-      };
+   if (req.query.limit != undefined) {
+      limit = `LIMIT ${req.query.limit}`;
    }
 
-   Invoice.findByIdFilter(filtered, conditions, (err, data) => {
+   Invoice.findByIdFilter(query, order, limit, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
