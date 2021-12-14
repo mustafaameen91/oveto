@@ -1,7 +1,7 @@
 module.exports = (app) => {
    const province = require("../controllers/province.controllers.js");
 
-   app.post("province/new", province.create);
+   app.post("/province/new", province.create);
 
    app.get("/provinces", province.findAll);
 
