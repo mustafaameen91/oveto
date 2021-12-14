@@ -8,11 +8,9 @@ exports.create = (req, res) => {
    }
 
    const itemPrice = new ItemPrice({
-      itemPricename: req.body.itemPricename,
-      password: req.body.password,
-      roleId: req.body.roleId,
-      phone: req.body.phone,
-      email: req.body.email,
+      itemId: req.body.itemId,
+      sellPriceId: req.body.sellPriceId,
+      price: parseFloat(req.body.price),
    });
    ItemPrice.create(itemPrice, (err, data) => {
       if (err) res.status(err.code).send(err);
@@ -44,7 +42,6 @@ exports.update = (req, res) => {
    }
 
    console.log(req.params.id);
-   console.log(req.body);
 
    ItemPrice.updateById(req.params.id, new ItemPrice(req.body), (err, data) => {
       if (err) res.status(err.code).send(err);

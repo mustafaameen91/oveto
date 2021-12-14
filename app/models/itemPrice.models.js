@@ -4,11 +4,9 @@ const {
 } = require("./../middleware/handleError.middleware.js");
 
 const ItemPrice = function (itemPrice) {
-   this.itemPricename = itemPrice.itemPricename;
-   this.password = itemPrice.password;
-   this.roleId = itemPrice.roleId;
-   this.phone = itemPrice.phone;
-   this.email = itemPrice.email;
+   this.itemId = itemPrice.itemId;
+   this.sellPriceId = itemPrice.sellPriceId;
+   this.price = itemPrice.price;
 };
 
 ItemPrice.create = async (newItemPrice, result) => {
