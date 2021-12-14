@@ -36,7 +36,7 @@ require("./app/routes/province.routes.js")(app);
 app.get("/files/uploads/:file", function (request, response) {
    let file = request.params.file;
    var extension = file.split(".").pop();
-   var tempFile = path.join(__dirname, "..", "uploads/" + file);
+   var tempFile = path.join(__dirname, "..", "app/uploads/" + file);
    fs.readFile(tempFile, function (err, data) {
       console.log(err);
       switch (extension) {
