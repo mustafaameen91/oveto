@@ -74,6 +74,8 @@ Item.getAllWithQuery = async (result) => {
    try {
       const items =
          await prismaInstance.$queryRaw`SELECT *, (SELECT @totalPlus := IFNULL(SUM(count), 0) FROM invoiceContent JOIN invoice ON invoiceContent.invoiceId = invoice.idInvoice JOIN invoiceType ON invoice.invoiceTypeId = invoiceType.idInvoiceType WHERE invoiceContent.itemId = item.idItem AND invoiceType.invoiceFunction = 'plus') AS totalPlus, (SELECT @totalMinus := IFNULL(SUM(count), 0) FROM invoiceContent JOIN invoice ON invoiceContent.invoiceId = invoice.idInvoice JOIN invoiceType ON invoice.invoiceTypeId = invoiceType.idInvoiceType WHERE invoiceContent.itemId = item.idItem AND invoiceType.invoiceFunction = 'minus') AS totalMinus, (@totalPlus - @totalMinus) AS store, (SELECT GROUP_CONCAT(json_object('price',price,'sellPriceId',sellPriceId,'sellPriceName',sellPriceName)) FROM itemPrice JOIN sellPrice ON itemPrice.sellPriceId = sellPrice.idSellPrice WHERE itemPrice.itemId = item.idItem) As prices FROM item LEFT JOIN itemGroup ON item.itemGroupId = itemGroup.idItemGroup`;
+      items.prices = `[${items.prices}]`;
+      items.prices = JSON.stringify(items.prices);
       result(null, items);
    } catch (err) {
       console.log(prismaErrorHandling(err));
@@ -85,10 +87,36 @@ Item.getAll = async (result) => {
    try {
       const items = await prismaInstance.item.findMany({
          include: {
-            prices: true,
+            itemGroup: true,
+            prices: {
+               include: {
+                  sellPrice: true,
+               },
+            },
          },
       });
-      result(null, items);
+
+      let formattedItems = items.map((item) => {
+         return {
+            idItem: item.idItem,
+            itemName: item.itemName,
+            itemGroupId: item.itemGroupId,
+            itemGroupName: item.itemGroup.itemGroupName,
+            itemCode: item.itemCode,
+            itemBarcode: item.itemBarcode,
+            itemDescription: item.itemDescription,
+            isAvailable: item.isAvailable,
+            prices: item.prices.map((price) => {
+               return {
+                  price: price.price,
+                  sellPriceId: price.sellPrice.idSellPrice,
+                  sellPriceName: price.sellPrice.sellPriceName,
+               };
+            }),
+         };
+      });
+
+      result(null, formattedItems);
    } catch (err) {
       console.log(prismaErrorHandling(err));
       result(prismaErrorHandling(err), null);
