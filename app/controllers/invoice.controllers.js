@@ -94,8 +94,8 @@ exports.findByFilter = (req, res) => {
 
    if (req.query.order) {
       let orderInvoice = req.query.order;
-      conditions.orderBy = {};
-      conditions.orderBy[orderInvoice] = req.query.order;
+      filtered.orderBy = {};
+      filtered.orderBy[orderInvoice] = req.query.order;
    }
 
    if (req.query.dateRangeFrom && req.query.dateRangeTo) {
