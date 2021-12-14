@@ -25,7 +25,7 @@ exports.resize = (req, res, next) => {
 
       file.mv(path.join(__dirname, `../uploads/${imageName}`), function (err) {
          if (err) return res.status(500).send(err);
-         req.filePath = `/uploads/${imageName}`;
+         req.filePath = `uploads/${imageName}`;
          next();
       });
    } else {

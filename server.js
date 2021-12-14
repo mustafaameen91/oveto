@@ -34,7 +34,6 @@ require("./app/routes/supervisorDelegate.routes.js")(app);
 require("./app/routes/province.routes.js")(app);
 
 app.get("/files/uploads/:file", function (request, response) {
-   console.log(dirRoot);
    let file = request.params.file;
    var extension = file.split(".").pop();
    var tempFile = path.join(__dirname, "..", "uploads/" + file);
