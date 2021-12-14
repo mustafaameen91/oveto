@@ -6,6 +6,16 @@ exports.create = (req, res) => {
          message: "Content can not be empty!",
       });
    }
+   console.log(req.body);
+   // let data = {
+   //    invoiceTypeId: req.body.invoiceType,
+   //    customerId: req.body.customerId,
+   //    createdBy: req.body.createdBy,
+   //    notice: req.body.notice,
+   //    sellPriceId: req.body.sellPriceId,
+   //    sellTypeId: req.body.sellTypeId,
+   //    deliveryId: req.body.deliveryId,
+   // };
 
    Invoice.create(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);
