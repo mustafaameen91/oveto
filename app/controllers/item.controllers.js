@@ -18,7 +18,10 @@ exports.create = (req, res) => {
    // });
 
    let itemInfo = JSON.parse(req.body.itemInfo);
-   let itemPrice = JSON.parse(req.body.itemPrice);
+   let itemPrice = JSON.parse(req.body.itemPrices);
+
+   console.log(itemInfo);
+   console.log(itemPrice);
 
    let data = {
       itemInfo: {
