@@ -42,8 +42,12 @@ exports.update = (req, res) => {
    }
 
    console.log(req.params.id);
-
-   ItemPrice.updateById(req.params.id, new ItemPrice(req.body), (err, data) => {
+   let data = {
+      itemId: req.body.itemId,
+      sellPriceId: req.body.sellPriceId,
+      price: parseFloat(req.body.price),
+   };
+   ItemPrice.updateById(req.params.id, data, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
