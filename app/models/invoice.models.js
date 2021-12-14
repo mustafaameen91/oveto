@@ -40,6 +40,13 @@ Invoice.findByIdFilter = async (filter, conditions, result) => {
             ...conditions,
          },
          ...filter,
+         include: {
+            invoiceType: true,
+            sellPrice: true,
+            customer: true,
+            delivery: true,
+            user: true,
+         },
       });
 
       if (singleInvoice.length > 0) {
