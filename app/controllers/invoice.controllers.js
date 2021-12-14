@@ -112,44 +112,41 @@ exports.findByFilter = (req, res) => {
    let order = "";
    let limit = "";
 
-   if (req.query.id != undefined) {
+   if (req.query.id) {
       query = query + ` AND idInvoice = ${req.query.id}`;
    }
 
-   if (req.query.date != undefined) {
+   if (req.query.date) {
       query = query + ` AND DATE(createdAt) = '${req.query.date}'`;
    }
 
-   if (
-      req.query.dateRangeFrom != undefined &&
-      req.query.dateRangeTo != undefined
-   ) {
+   if (req.query.dateRangeFrom && req.query.dateRangeTo) {
       query =
          query +
          ` AND DATE(createdAt) BETWEEN '${req.query.dateRangeFrom}' AND '${req.query.dateRangeTo}'`;
    }
 
-   if (req.query.user != undefined) {
+   if (req.query.user) {
       query = query + ` AND createdBy IN (${req.query.user})`;
    }
 
-   if (req.query.type != undefined) {
+   if (req.query.type) {
       query = query + ` AND invoiceTypeId IN (${req.query.type})`;
    }
 
-   if (req.query.delivery != undefined) {
+   if (req.query.delivery) {
       query = query + ` AND deliveryId IN (${req.query.delivery})`;
    }
 
-   if (req.query.customer != undefined) {
+   if (req.query.customer) {
       query = query + ` AND customerId IN (${req.query.customer})`;
    }
 
-   if (req.query.order != undefined) {
+   if (req.query.order) {
       order = "ORDER BY " + req.query.order + " " + req.query.sort;
    }
 
-   if (req.query.limit != undefined) {
+   if (req.query.limit) {
       limit = `LIMIT ${req.query.limit}`;
    }
 
