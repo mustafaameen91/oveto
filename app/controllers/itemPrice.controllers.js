@@ -41,7 +41,6 @@ exports.update = (req, res) => {
       });
    }
 
-   console.log(req.params.id);
    let data = {
       itemId: req.body.itemId,
       sellPriceId: req.body.sellPriceId,

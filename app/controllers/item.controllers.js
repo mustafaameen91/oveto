@@ -98,6 +98,16 @@ exports.update = (req, res) => {
       });
    }
 
+   let data = {
+      itemName: req.body.itemName,
+      itemGroupId: req.body.itemGroupId * 1,
+      itemCode: req.body.itemCode,
+      itemBarcode: req.body.itemBarcode,
+      imagePath: req.filePath,
+      itemDescription: req.body.itemDescription,
+      isAvailable: req.body.isAvailable ? 1 : 0,
+   };
+
    Item.updateById(req.params.id, new Item(req.body), (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
