@@ -50,16 +50,10 @@ Visit.getAllByDate = async (userId, date, result) => {
    try {
       const visits = await prismaInstance.visit.findMany({
          where: {
-            AND: [
-               {
-                  createdBy: JSON.parse(userId),
-               },
-               {
-                  customer: {
-                     createdAt: date,
-                  },
-               },
-            ],
+            createdBy: JSON.parse(userId),
+            customer: {
+               ...date,
+            },
          },
          include: {
             user: true,
