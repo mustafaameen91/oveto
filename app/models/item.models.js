@@ -23,7 +23,7 @@ Item.create = async (newItem, result) => {
       const item = await prismaInstance.item.create({
          data: {
             ...itemInfo,
-            itemPrices: {
+            prices: {
                create: itemPrices,
             },
          },

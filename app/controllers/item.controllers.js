@@ -17,11 +17,15 @@ exports.create = (req, res) => {
    //    isAvailable: req.body.isAvailable * 1,
    // });
 
+   console.log(req.body);
+
    let data = {
       itemInfo: req.body.itemInfo,
       itemPrices: req.body.itemPrices,
       imagePath: req.filePath,
    };
+
+   data.itemInfo.itemGroupId = parseInt(data.itemInfo.itemGroupId);
 
    Item.create(data, (err, data) => {
       if (err) res.status(err.code).send(err);
