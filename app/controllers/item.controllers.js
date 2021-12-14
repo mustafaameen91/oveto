@@ -17,21 +17,21 @@ exports.create = (req, res) => {
    //    isAvailable: req.body.isAvailable * 1,
    // });
 
-   console.log(req.body);
+   let item = JSON.parse(req.body);
 
    let data = {
       itemInfo: {
-         itemName: req.body.itemInfo.itemName,
-         itemGroupId: req.body.itemInfo.itemGroup,
-         itemCode: req.body.itemInfo.itemCode,
-         itemBarcode: req.body.itemInfo.itemBarcode,
+         itemName: item.itemInfo.itemName,
+         itemGroupId: item.itemInfo.itemGroup,
+         itemCode: item.itemInfo.itemCode,
+         itemBarcode: item.itemInfo.itemBarcode,
          imagePath: req.filePath,
-         itemDescription: req.body.itemInfo.itemDescription,
+         itemDescription: item.itemInfo.itemDescription,
          isAvailable: 1,
       },
       itemPrices: {
-         sellPriceId: req.body.itemPrices.sellPriceId,
-         price: req.body.itemPrices.price,
+         sellPriceId: item.itemPrices.sellPriceId,
+         price: item.itemPrices.price,
       },
       imagePath: req.filePath,
    };
