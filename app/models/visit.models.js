@@ -48,8 +48,32 @@ Visit.findById = async (visitId, result) => {
 
 Visit.getAll = async (result) => {
    try {
-      const visits = await prismaInstance.visit.findMany({});
-      result(null, visits);
+      const visits = await prismaInstance.visit.findMany({
+         include: {
+            user: true,
+            customer: true,
+            visitCause: true,
+         },
+      });
+
+      let formattedVisits = visits.map((visit) => {
+         return {
+            createdBy: visit.createdBy,
+            createdAt: `${new Date(
+               visit.createdAt
+            ).toLocaleDateString()} ${new Date(
+               visit.createdAt
+            ).toLocaleTimeString()}`,
+            customerId: visit.customerId,
+            visitCauseId: visit.visitCauseId,
+            longitude: visit.longitude,
+            latitude: visit.latitude,
+            username: visit.user.username,
+            storeName: visit.customer.storeName,
+            visitCauseName: visit.visitCause.visitCauseName,
+         };
+      });
+      result(null, formattedVisits);
    } catch (err) {
       console.log(prismaErrorHandling(err));
       result(prismaErrorHandling(err), null);
