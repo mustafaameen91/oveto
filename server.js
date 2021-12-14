@@ -30,6 +30,7 @@ require("./app/routes/discount.routes.js")(app);
 require("./app/routes/customer.routes.js")(app);
 require("./app/routes/customerClass.routes.js")(app);
 require("./app/routes/deliveryStatus.routes.js")(app);
+require("./app/routes/supervisorDelegate.routes.js")(app);
 
 app.get("/files/uploads/:file", function (request, response) {
    console.log(dirRoot);
