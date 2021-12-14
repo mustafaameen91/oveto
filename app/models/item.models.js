@@ -15,9 +15,9 @@ const Item = function (item) {
 
 Item.create = async (newItem, result) => {
    let itemInfo = {
-      ...JSON.parse(newItem.itemInfo),
+      ...newItem.itemInfo,
    };
-   let itemPrices = JSON.parse(newItem.itemPrices);
+   let itemPrices = newItem.itemPrices;
    try {
       const item = await prismaInstance.item.create({
          data: {
