@@ -37,7 +37,6 @@ app.get("/files/uploads/:file", function (request, response) {
    let file = request.params.file;
    var extension = file.split(".").pop();
    var tempFile = path.join(__dirname, "..", "uploads/" + file);
-   console.log(dirRoot);
    fs.readFile(tempFile, function (err, data) {
       console.log(err);
       switch (extension) {
