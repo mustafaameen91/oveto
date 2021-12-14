@@ -85,7 +85,7 @@ exports.updateImage = (req, res) => {
       });
    }
 
-   Item.updateImageById(req.params.id, req.imagePath, (err, data) => {
+   Item.updateImageById(req.params.id, req.filePath, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
