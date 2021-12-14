@@ -16,7 +16,6 @@ const Item = function (item) {
 Item.create = async (newItem, result) => {
    let itemInfo = {
       ...JSON.parse(newItem.itemInfo),
-      imagePath: newItem.imagePath,
    };
    let itemPrices = JSON.parse(newItem.itemPrices);
    try {

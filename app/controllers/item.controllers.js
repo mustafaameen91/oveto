@@ -17,15 +17,22 @@ exports.create = (req, res) => {
    //    isAvailable: req.body.isAvailable * 1,
    // });
 
-   console.log(req.body);
-
    let data = {
-      itemInfo: req.body.itemInfo,
-      itemPrices: req.body.itemPrices,
+      itemInfo: {
+         itemName: req.body.itemInfo.itemName,
+         itemGroupId: req.body.itemInfo.itemGroup,
+         itemCode: req.body.itemInfo.itemCode,
+         itemBarcode: req.body.itemInfo.itemBarcode,
+         itemPath: req.filePath,
+         itemDescription: req.body.itemInfo.itemDescription,
+         isAvailable: 1,
+      },
+      itemPrices: {
+         sellPriceId: req.body.itemPrices.sellPriceId,
+         price: req.body.itemPrices.price,
+      },
       imagePath: req.filePath,
    };
-
-   data.itemInfo.itemGroupId = parseInt(data.itemInfo.itemGroupId);
 
    Item.create(data, (err, data) => {
       if (err) res.status(err.code).send(err);
