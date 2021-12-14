@@ -9,7 +9,7 @@ exports.create = (req, res) => {
    console.log(req.body);
    let invoice = {
       invoice: {
-         invoiceTypeId: req.body.invoice.invoiceType,
+         invoiceTypeId: req.body.invoice.invoiceTypeId,
          customerId: req.body.invoice.customerId,
          createdBy: req.body.invoice.createdBy,
          notice: req.body.invoice.notice,
