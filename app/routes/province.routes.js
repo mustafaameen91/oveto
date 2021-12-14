@@ -5,7 +5,7 @@ module.exports = (app) => {
 
    app.get("/provinces", province.findAll);
 
-   app.get("/api/province/:id", province.findOne);
+   app.get("/province/:id", province.findOne);
 
    app.put("/province/edit/:id", province.update);
 
