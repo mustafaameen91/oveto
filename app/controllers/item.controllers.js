@@ -36,7 +36,7 @@ exports.create = (req, res) => {
       itemPrices: itemPrice.map((item) => {
          return {
             sellPriceId: item.sellPriceId,
-            price: item.price,
+            price: parseFloat(item.price),
          };
       }),
       imagePath: req.filePath,
