@@ -17,13 +17,15 @@ exports.create = (req, res) => {
    //    isAvailable: req.body.isAvailable * 1,
    // });
 
+   console.log(req.body);
+
    let data = {
       itemInfo: {
          itemName: req.body.itemInfo.itemName,
          itemGroupId: req.body.itemInfo.itemGroup,
          itemCode: req.body.itemInfo.itemCode,
          itemBarcode: req.body.itemInfo.itemBarcode,
-         itemPath: req.filePath,
+         imagePath: req.filePath,
          itemDescription: req.body.itemInfo.itemDescription,
          isAvailable: 1,
       },
