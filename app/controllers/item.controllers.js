@@ -108,7 +108,7 @@ exports.update = (req, res) => {
       isAvailable: req.body.isAvailable ? 1 : 0,
    };
 
-   Item.updateById(req.params.id, new Item(req.body), (err, data) => {
+   Item.updateById(req.params.id, data, (err, data) => {
       if (err) res.status(err.code).send(err);
       else res.send(data);
    });
