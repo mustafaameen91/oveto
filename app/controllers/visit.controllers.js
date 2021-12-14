@@ -22,6 +22,24 @@ exports.create = (req, res) => {
    });
 };
 
+exports.findAllByDate = (req, res) => {
+   let filtered = {};
+   if (req.query.date) {
+      var startDate = new Date(req.query.date);
+      var day = 60 * 60 * 24 * 1000;
+      var endDate = new Date(startDate.getTime() + day);
+
+      filtered.createdAt = {
+         lte: endDate.toISOString(),
+         gte: startDate.toISOString(),
+      };
+   }
+   Visit.getAllByDate(req.params.id, filtered, (err, data) => {
+      if (err) res.status(err.code).send(err);
+      else res.send(data);
+   });
+};
+
 exports.findAll = (req, res) => {
    Visit.getAll((err, data) => {
       if (err) res.status(err.code).send(err);

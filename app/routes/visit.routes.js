@@ -5,6 +5,8 @@ module.exports = (app) => {
 
    app.get("/visit", visit.findAll);
 
+   app.get("/visit/user/:id", visit.findAllByDate);
+
    app.get("/api/visit/:id", visit.findOne);
 
    app.put("/visit/:id", visit.update);
