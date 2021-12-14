@@ -38,6 +38,7 @@ Invoice.findByIdFilter = async (query, order, limit, result) => {
       console.log(`query: ${query} - limit: ${limit} - order: ${order}`);
       const singleInvoice =
          await prismaInstance.$queryRaw`SELECT *,(SELECT customerName FROM customer WHERE idCustomer = invoice.customerId) As customerName,(SELECT username FROM user WHERE idUser = invoice.createdBy) As createdByName, (SELECT username FROM user WHERE idUser = invoice.deliveryId) As deliveryName, (SELECT COALESCE(SUM(total),0) FROM invoiceContent WHERE invoiceId = invoice.idInvoice) As totalPrice, (SELECT COUNT(*) FROM invoiceContent WHERE invoiceId = invoice.idInvoice) As totalItems, DATE_FORMAT(createdAt, '%Y-%m-%d') As creationFixedDate, DATE_FORMAT(createdAt, '%r') As creationFixedTime, DATE_FORMAT(createdAt, '%W') As creationDayName FROM invoice JOIN invoiceType ON invoice.invoiceTypeId = invoiceType.idInvoiceType WHERE 1=1 ${query} ${order} ${limit}`;
+      console.log(singleInvoice);
 
       if (singleInvoice.length > 0) {
          result(null, singleInvoice);
