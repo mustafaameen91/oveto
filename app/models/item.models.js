@@ -86,7 +86,7 @@ Item.getAll = async (result) => {
    try {
       const items = await prismaInstance.item.findMany({
          include: {
-            itemPrice: true,
+            prices: true,
          },
       });
       result(null, items);
