@@ -120,6 +120,8 @@ Item.getAll = async (result) => {
             itemGroupId: item.itemGroupId,
             itemGroupName: item.itemGroup.itemGroupName,
             itemCode: item.itemCode,
+            imagePath: item.imagePath,
+            idItemGroup: item.itemGroup.idItemGroup,
             itemBarcode: item.itemBarcode,
             itemDescription: item.itemDescription,
             isAvailable: item.isAvailable,
