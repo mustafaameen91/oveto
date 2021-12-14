@@ -7,18 +7,19 @@ exports.create = (req, res) => {
       });
    }
    console.log(req.body);
-   let data = {
-      invoiceTypeId: req.body.invoice.invoiceType,
-      customerId: req.body.invoice.customerId,
-      createdBy: req.body.invoice.createdBy,
-      notice: req.body.invoice.notice,
-      sellPriceId: req.body.invoice.sellPriceId,
-      sellTypeId: req.body.invoice.sellTypeId,
-      deliveryId: req.body.invoice.deliveryId
-         ? req.body.invoice.deliveryId
-         : null,
-
-      invoiceContent: req.body.invoiceContent.map((con) => {
+   let invoice = {
+      invoice: {
+         invoiceTypeId: req.body.invoice.invoiceType,
+         customerId: req.body.invoice.customerId,
+         createdBy: req.body.invoice.createdBy,
+         notice: req.body.invoice.notice,
+         sellPriceId: req.body.invoice.sellPriceId,
+         sellTypeId: req.body.invoice.sellTypeId,
+         deliveryId: req.body.invoice.deliveryId
+            ? req.body.invoice.deliveryId
+            : null,
+      },
+      invoiceContent: req.body.invoiceContents.map((con) => {
          return {
             itemId: parseInt(con.itemId),
             count: parseInt(con.count),
@@ -30,7 +31,7 @@ exports.create = (req, res) => {
       }),
    };
 
-   Invoice.create(req.body, (err, data) => {
+   Invoice.create(invoice, (err, data) => {
       if (err) res.status(err.code).send(err);
       else {
          res.send(data);
