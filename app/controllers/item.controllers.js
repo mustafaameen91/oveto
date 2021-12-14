@@ -33,10 +33,12 @@ exports.create = (req, res) => {
          itemDescription: itemInfo.itemDescription,
          isAvailable: 1,
       },
-      itemPrices: {
-         sellPriceId: itemPrice.sellPriceId,
-         price: itemPrice.price,
-      },
+      itemPrices: itemPrice.map((item) => {
+         return {
+            sellPriceId: item.sellPriceId,
+            price: item.price,
+         };
+      }),
       imagePath: req.filePath,
    };
 
