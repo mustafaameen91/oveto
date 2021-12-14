@@ -172,7 +172,11 @@ Customer.findById = async (customerId, result) => {
 
 Customer.getAll = async (result) => {
    try {
-      const customers = await prismaInstance.customer.findMany({});
+      const customers = await prismaInstance.customer.findMany({
+         include: {
+            sellPrice: true,
+         },
+      });
       result(null, customers);
    } catch (err) {
       console.log(prismaErrorHandling(err));
