@@ -7,15 +7,28 @@ exports.create = (req, res) => {
       });
    }
    console.log(req.body);
-   // let data = {
-   //    invoiceTypeId: req.body.invoiceType,
-   //    customerId: req.body.customerId,
-   //    createdBy: req.body.createdBy,
-   //    notice: req.body.notice,
-   //    sellPriceId: req.body.sellPriceId,
-   //    sellTypeId: req.body.sellTypeId,
-   //    deliveryId: req.body.deliveryId,
-   // };
+   let data = {
+      invoiceTypeId: req.body.invoice.invoiceType,
+      customerId: req.body.invoice.customerId,
+      createdBy: req.body.invoice.createdBy,
+      notice: req.body.invoice.notice,
+      sellPriceId: req.body.invoice.sellPriceId,
+      sellTypeId: req.body.invoice.sellTypeId,
+      deliveryId: req.body.invoice.deliveryId
+         ? req.body.invoice.deliveryId
+         : null,
+
+      invoiceContent: req.body.invoiceContent.map((con) => {
+         return {
+            itemId: parseInt(con.itemId),
+            count: parseInt(con.count),
+            discount: con.discount,
+            discountTypeId: con.discountTypeId,
+            price: parseFloat(con.price),
+            total: parseFloat(con.total),
+         };
+      }),
+   };
 
    Invoice.create(req.body, (err, data) => {
       if (err) res.status(err.code).send(err);

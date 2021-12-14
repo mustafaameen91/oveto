@@ -78,18 +78,18 @@ model invoice {
 }
 
 model invoiceContent {
-  idInvoiceContent Int      @id @default(autoincrement())
-  invoice          invoice  @relation(fields: [invoiceId], references: [idInvoice])
+  idInvoiceContent Int       @id @default(autoincrement())
+  invoice          invoice   @relation(fields: [invoiceId], references: [idInvoice])
   invoiceId        Int
-  item             item     @relation(fields: [itemId], references: [idItem])
+  item             item      @relation(fields: [itemId], references: [idItem])
   itemId           Int
-  count            Float    @db.Float
-  createdAt        DateTime @default(now()) @db.Timestamp(0)
-  discount         Float    @default(0) @db.Float
-  discountType     discount @relation(fields: [discountTypeId], references: [idDiscount])
-  discountTypeId   Int
-  price            Float    @db.Float
-  total            Float    @db.Float
+  count            Float     @db.Float
+  createdAt        DateTime  @default(now()) @db.Timestamp(0)
+  discount         Float     @default(0) @db.Float
+  discountType     discount? @relation(fields: [discountTypeId], references: [idDiscount])
+  discountTypeId   Int?
+  price            Float     @db.Float
+  total            Float     @db.Float
 }
 
 model invoiceType {
